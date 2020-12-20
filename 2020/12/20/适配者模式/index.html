@@ -28,10 +28,10 @@
 <meta property="og:description" content="重点 将一个类的接口(Adaptee)转换成用户期望的另一个接口(Target) 使原本接口不兼容的类可以一起工作 目标类和适配器类解耦，提高程序的拓展性  类适配器模式首先是被适配者: 123456public class Adaptee &amp;#123;    public void adapteeRequest()&amp;#123;        System.out.println(&quot;被适">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-12-20T06:49:14.000Z">
-<meta property="article:modified_time" content="2020-12-20T08:16:40.379Z">
+<meta property="article:modified_time" content="2020-12-20T08:20:03.441Z">
 <meta property="article:author" content="CMW845751770">
-<meta property="article:tag" content="设计模式">
 <meta property="article:tag" content="Java">
+<meta property="article:tag" content="设计模式">
 <meta property="article:tag" content="Spring MVC">
 <meta name="twitter:card" content="summary">
 
@@ -177,7 +177,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-12-20 14:49:14 / Modified: 16:16:40" itemprop="dateCreated datePublished" datetime="2020-12-20T14:49:14+08:00">2020-12-20</time>
+              <time title="Created: 2020-12-20 14:49:14 / Modified: 16:20:03" itemprop="dateCreated datePublished" datetime="2020-12-20T14:49:14+08:00">2020-12-20</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -195,7 +195,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2.4k</span>
+              <span>2.3k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -229,7 +229,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Adaptor</span> <span class="keyword">implements</span> <span class="title">Target</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Adaptee adaptee = <span class="keyword">new</span> Adaptee();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">request</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        adaptee.adapteeRequest();</span><br><span class="line">        <span class="comment">//适配的逻辑...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p>这里以Spring MVC中的HandlerAdapter为例子。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">HandlerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(Object var1)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="function">ModelAndView <span class="title">handle</span><span class="params">(HttpServletRequest var1, HttpServletResponse var2, Object var3)</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">long</span> <span class="title">getLastModified</span><span class="params">(HttpServletRequest var1, Object var2)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个HandlerAdaptor是一个接口，里面比较重要的两个方法，首先是supports方法，它的入参是一个Object类型的参数，实际上就是一个Handler，返回的是一个boolean表示该适配器是否适配这个handler。然后是handle方法，这个就是具体的适配器逻辑，使用提供的handler来处理请求。</p>
+<p>这个HandlerAdaptor是一个接口，里面比较重要的两个方法，首先是supports方法，它的入参是一个Object类型的参数，实际上就是一个handler，返回的是一个boolean表示该适配器是否适配这个handler。然后是handle方法，这个就是具体的适配器逻辑，使用提供的handler来处理请求。</p>
 <p>我们从请求的入口DispatcherServlet开始看起，首先看它的doDispatch方法中的这段代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Determine handler for the current request.				</span></span><br><span class="line">mappedHandler = getHandler(processedRequest);</span><br><span class="line"><span class="keyword">if</span> (mappedHandler == <span class="keyword">null</span>) &#123;</span><br><span class="line">	noHandlerFound(processedRequest, response);</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Determine handler adapter for the current request.</span></span><br><span class="line">HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>这里首先是根据请求然后调用getHandler方法来获取到对应的handler，通过getHandlerAdapter来获取对应的适配器：</p>
@@ -237,7 +237,7 @@
 <p>最后调用adaptor的handle方法来处理，得到一个ModelAndView对象，这样一个请求基本就处理完了。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv = ha.handle(processedRequest, response, mappedHandler.getHandler());</span><br></pre></td></tr></table></figure>
 <p>由于handler的类型不同，有多重实现方式，那么调用方式就不是确定的，如果需要直接调用handler方法那可能需要在代码中写成以下的形式:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(mappedHandler.getHandler() <span class="keyword">instanceof</span> MultiActionController)&#123;  </span><br><span class="line">   ((MultiActionController)mappedHandler.getHandler()).xxx  </span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(mappedHandler.getHandler() <span class="keyword">instanceof</span> HttpRequestHandler)&#123;  </span><br><span class="line">   ((HttpRequestHandler) handler).handleRequest(request, response);</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(...)&#123;  </span><br><span class="line">   ...  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(mappedHandler.getHandler() <span class="keyword">instanceof</span> HttpRequestHandler)&#123;  </span><br><span class="line">   ((HttpRequestHandler) handler).handleRequest(request, response);</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(...)&#123;  </span><br><span class="line">   ...  </span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(...)&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这种形式就使得程序难以维护，也违反了设计模式中的开闭原则，即对扩展开放，对修改关闭。 </p>
 
     </div>
@@ -248,8 +248,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"># 设计模式</a>
               <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"># 设计模式</a>
               <a href="/tags/Spring-MVC/" rel="tag"># Spring MVC</a>
           </div>
 
